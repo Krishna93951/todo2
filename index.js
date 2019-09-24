@@ -32,7 +32,6 @@ function getTodo()
 }
 function addTodo() 
 {
-  
   var task = document.getElementById('todoTask').value;
   var todos = getTodo();
   todos.push(task);
@@ -40,17 +39,16 @@ function addTodo()
   showTodo();
 }
 function showTodo() 
-{
+{ 
   var todos = getTodo();
   var html = '<ul id="ul">';
   for (var i = 0; i < todos.length; i++)
   {
-    html += '<li>' + '<input type="checkbox" id="' + i + '" class="check">' +' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
+    html += '<li>' + '<input type="checkbox" id="' + i + '" autocomplete="on">' +' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
   };
   html += '</ul>';
   document.getElementById('todoList').innerHTML = html;
   removeBtn();
-  
 }
 function removeTodo() 
 {
@@ -79,7 +77,7 @@ function checked()
 {
   var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
   //console.log(Object.keys(comp));
-  //console.log(Object.entries(comp));
+  console.log(Object.entries(completed));
   if (completed.length != 0) 
   {
     alert(localeString.completed + ' ' + completed.length);
