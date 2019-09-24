@@ -50,7 +50,7 @@ function showTodo()
   document.getElementById('todoList').innerHTML = html;
   removeBtn();
 }
-function removeTodo() 
+function removeTask() 
 {
   var id = this.getAttribute('id');
   var todos = getTodo();
@@ -117,7 +117,7 @@ function removeBtn()
 {
   var buttons = document.getElementsByClassName('remove');
   for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', removeTodo);
+    buttons[i].addEventListener('click', removeTask);
   };
 }
 function eventHandler() 
