@@ -76,8 +76,8 @@ function all()
 function checked() 
 {
   var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
-  //console.log(Object.keys(comp));
-  console.log(Object.entries(completed));
+  console.log(Object.values(completed));
+  //console.log(Object.entries(completed));
   if (completed.length != 0) 
   {
     alert(localeString.completed + ' ' + completed.length);
