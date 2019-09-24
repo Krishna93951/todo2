@@ -1,0 +1,28 @@
+h1{
+  text-align: center;
+  background-color: lightcoral;
+  height: 60px;
+  margin-top: 20px;
+}
+
+#actions{
+  text-align: center;
+  background-color: lightcoral;
+  padding: 30px;
+}
+
+#todoTask{
+  width: 800px;
+  height: 20px;
+}
+
+#ul{
+  list-style-type:none;
+}
+
+#todoList{
+  text-align: center;
+  padding: 30px;
+  background-color: lightgreen;
+}
+
