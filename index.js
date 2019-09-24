@@ -4,8 +4,6 @@ import './style.css';
 // Write Javascript code!
 var todos = [];
 var todos1 = [];
-var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
-var checked = [];
 //Count Messages if tasks are available
 var localeString = {
   all: "Number of All Tasks:",
@@ -18,7 +16,6 @@ var emptyString= {
   noneCompleted:"None of the Tasks are Completed",
   nonePending:"None of the Tasks are Pending"
 };
-
 function init()
 {
   showTodo();
@@ -35,12 +32,11 @@ function getTodo()
 }
 function addTodo() 
 {
+  
   var task = document.getElementById('todoTask').value;
   var todos = getTodo();
   todos.push(task);
   localStorage.setItem('todo', JSON.stringify(todos));
-  checked =Object.values(completed);
-  console.log(checked)
   showTodo();
 }
 function showTodo() 
@@ -54,6 +50,7 @@ function showTodo()
   html += '</ul>';
   document.getElementById('todoList').innerHTML = html;
   removeBtn();
+  
 }
 function removeTodo() 
 {
@@ -80,7 +77,7 @@ function all()
 //function for completed tasks
 function checked() 
 {
-  
+  var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
   //console.log(Object.keys(comp));
   //console.log(Object.entries(comp));
   if (completed.length != 0) 
@@ -94,7 +91,8 @@ function checked()
 }
 //function for pending tasks
 function pending() 
-{
+{ 
+  var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
   var todos = getTodo();
   var pending = todos.length - completed.length;
   //console.log(pending)
