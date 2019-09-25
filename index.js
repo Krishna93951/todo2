@@ -3,24 +3,22 @@ import './style.css';
 
 // Write Javascript code!
 var todos = [];
-var todos1 = [];
 //Count Messages if tasks are available
-var localeString = {
+var alertMessage = {
   all: "Number of All Tasks:",
   completed: "Number of Completed Tasks:",
-  pending: "Number of Pending Tasks: "
-};
-////Messages if tasks are unavailable
-var emptyString= {
+  pending: "Number of Pending Tasks: ",
   empty:"No Tasks Available",
   noneCompleted:"None of the Tasks are Completed",
   nonePending:"None of the Tasks are Pending"
 };
+
 function init()
 {
-  showTodo();
-  eventHandler();
+  showTask();
+  eventsHandler();
 }
+
 function getTodo() 
 {
   var todos_str = localStorage.getItem('todo');
@@ -30,15 +28,17 @@ function getTodo()
   }
   return todos;
 }
-function addTodo() 
+
+function addTask() 
 {
   var task = document.getElementById('todoTask').value;
   var todos = getTodo();
   todos.push(task);
   localStorage.setItem('todo', JSON.stringify(todos));
-  showTodo();
+  showTask();
 }
-function showTodo() 
+
+function showTask() 
 { 
   var todos = getTodo();
   var html = '<ul id="ul">';
@@ -48,47 +48,50 @@ function showTodo()
   };
   html += '</ul>';
   document.getElementById('todoList').innerHTML = html;
-  removeBtn();
+  eventToRemoveTask();
 }
+
 function removeTask() 
 {
   var id = this.getAttribute('id');
   var todos = getTodo();
   todos.splice(id, 1);
   localStorage.setItem('todo', JSON.stringify(todos));
-  showTodo();
+  showTask();
 }
+
 //function for all tasks
-function all() 
+function allTaskCount() 
 {
   var todos = getTodo();
-  todos1 = todos;
-  if (todos1.length != 0) 
+  if (todos.length != 0) 
   {
-    alert(localeString.all + todos1.unshift());
+    alert(alertMessage.all + todos.unshift());
   }
   else 
   {
-    alert(emptyString.empty);
+    alert(alertMessage.empty);
   }
 }
+
 //function for completed tasks
-function checked() 
+function completedTaskCount() 
 {
   var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
   console.log(Object.values(completed));
   //console.log(Object.entries(completed));
   if (completed.length != 0) 
   {
-    alert(localeString.completed + ' ' + completed.length);
+    alert(alertMessage.completed + ' ' + completed.length);
   }
   else
   {
-    alert(emptyString.noneCompleted);
+    alert(alertMessage.noneCompleted);
   }
 }
+
 //function for pending tasks
-function pending() 
+function pendingTaskCount() 
 { 
   var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
   var todos = getTodo();
@@ -96,49 +99,57 @@ function pending()
   //console.log(pending)
   if(pending != 0)
   {
-    alert(localeString.pending + ' ' + pending);
+    alert(alertMessage.pending + ' ' + pending);
   }
   else
   {
-    alert(emptyString.nonePending);
+    alert(alertMessage.nonePending);
   }
 }
+
 //clearing the text field
 function clearField() 
 {
   document.getElementById("todoTask").value = "";
 }
+
 //focusing on the text field
 function focusField() 
 {
   document.getElementById("todoTask").focus();
 }
-function removeBtn() 
+
+function eventToRemoveTask() 
 {
   var buttons = document.getElementsByClassName('remove');
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', removeTask);
   };
 }
-function eventHandler() 
+
+function eventsHandler() 
 {
   document.getElementById('addBtn').addEventListener('click', event => 
   {
     focusField();
-    addTodo();
+    addTask();
     clearField();
   });
+
   document.getElementById('all').addEventListener('click', event => 
   {
-    all();
+   allTaskCount();
   });
+
   document.getElementById('completed').addEventListener('click', event => 
   {
-    checked();
+    completedTaskCount();
   });
+
   document.getElementById('pending').addEventListener('click', event => 
   {
-    pending();
+    pendingTaskCount();
   });
+
 }
 init();
