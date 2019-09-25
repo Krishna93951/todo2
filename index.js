@@ -32,7 +32,7 @@ function getTodo()
 function addTask() 
 {
   var task = document.getElementById('todoTask').value;
-  todos = getTodo();
+  getTodo();
   todos.push(task);
   localStorage.setItem('todo', JSON.stringify(todos));
   showTask();
@@ -40,7 +40,7 @@ function addTask()
 
 function showTask() 
 { 
-  todos = getTodo();
+  getTodo();
   var html = '<ul id="ul">';
   for (var i = 0; i < todos.length; i++)
   {
@@ -54,7 +54,7 @@ function showTask()
 function removeTask() 
 {
   var id = this.getAttribute('id');
-  todos = getTodo();
+  getTodo();
   todos.splice(id, 1);
   localStorage.setItem('todo', JSON.stringify(todos));
   showTask();
@@ -63,7 +63,7 @@ function removeTask()
 //function for all tasks
 function allTaskCount() 
 {
-  todos = getTodo();
+  getTodo();
   if (todos.length != 0) 
   {
     alert(alertMessage.all + todos.unshift());
@@ -94,7 +94,7 @@ function completedTaskCount()
 function pendingTaskCount() 
 { 
   var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
-  todos = getTodo();
+  getTodo();
   var pending = todos.length - completed.length;
   //console.log(pending)
   if(pending != 0)
