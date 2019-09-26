@@ -67,7 +67,7 @@ function allTaskCount()
   getTodo();
   if (todos.length != 0) 
   {
-    alert(alertMessage.all + todos.unshift());
+    alert(alertMessage.all + todos.length());
   }
   else 
   {
