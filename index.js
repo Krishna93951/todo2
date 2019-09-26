@@ -14,10 +14,15 @@ var alertMessage = {
   nonePending:"None of the Tasks are Pending"
 };
 
+var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
+// console.log(completed.length);
+var totalTodos = document.getElementById('allTask');
+
 function init()
 {
   showTask();
   eventsHandler();
+  totalMsg();
 }
 
 function getTodo() 
@@ -31,12 +36,14 @@ function getTodo()
 }
 
 function addTask() 
-{
+{ 
   var task = document.getElementById('todoTask').value;
   getTodo();
   todos.push(task);
   localStorage.setItem('todo', JSON.stringify(todos));
   showTask();
+  totalMsg()
+  
 }
 
 function showTask() 
@@ -45,13 +52,16 @@ function showTask()
   var html = '<ul id="ul">';
   for (var i = 0; i < todos.length; i++)
   {
-    html += '<li>' + '<input type="checkbox" id="' + i + '" autocomplete="on">' +' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
+    html += '<li>' + '<input type="checkbox" id="' + i + '" class="check">' +' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
   };
   html += '</ul>';
   document.getElementById('todoList').innerHTML = html;
   eventToRemoveTask();
+  eventToCheck()
 }
-
+function checked(){
+var toggle = document.get
+}
 function removeTask() 
 {
   var id = this.getAttribute('id');
@@ -59,55 +69,37 @@ function removeTask()
   todos.splice(id, 1);
   localStorage.setItem('todo', JSON.stringify(todos));
   showTask();
+  totalMsg()
+}
+
+function eventToRemoveTask() 
+{
+  var buttons = document.getElementsByClassName('remove');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', removeTask);
+  };
+}
+
+function eventToCheck(){
+  var check=document.getElementsByClassName('check');
+  for(var i=0; i<check.length; i++){
+    check[i].addEventListener('click',checked);
+    console.log(check);
+  };
 }
 
 //function for all tasks
-function allTaskCount() 
-{
+function totalMsg(){
   getTodo();
-  if (todos.length != 0) 
-  {
-    alert(alertMessage.all + todos.length());
+  const pending = todos.length-completed.length;
+  if(todos.length === 1){
+    return totalTodos.innerHTML = '<b>' + todos.length + '</b> thing to do / <b>' + completed.length + '</b> completed'+'</b> / Pending<b>'+pending;
   }
-  else 
-  {
-    alert(alertMessage.empty);
-  }
+  else{
+    return totalTodos.innerHTML = '<b>' + todos.length + '</b> things to do / <b>' + completed.length + '</b> completed'+'</b>  /Pending <b>'+pending;
+    }
+    
 }
-
-//function for completed tasks
-function completedTaskCount() 
-{
-  var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
-  console.log(Object.values(completed));
-  //console.log(Object.entries(completed));
-  if (completed.length != 0) 
-  {
-    alert(alertMessage.completed + ' ' + completed.length);
-  }
-  else
-  {
-    alert(alertMessage.noneCompleted);
-  }
-}
-
-//function for pending tasks
-function pendingTaskCount() 
-{ 
-  var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
-  getTodo();
-  var pending = todos.length - completed.length;
-  //console.log(pending)
-  if(pending != 0)
-  {
-    alert(alertMessage.pending + ' ' + pending);
-  }
-  else
-  {
-    alert(alertMessage.nonePending);
-  }
-}
-
 //clearing the text field
 function clearField() 
 {
@@ -120,13 +112,7 @@ function focusField()
   document.getElementById("todoTask").focus();
 }
 
-function eventToRemoveTask() 
-{
-  var buttons = document.getElementsByClassName('remove');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', removeTask);
-  };
-}
+
 
 function eventsHandler() 
 {
@@ -136,21 +122,5 @@ function eventsHandler()
     addTask();
     clearField();
   });
-
-  document.getElementById('all').addEventListener('click', event => 
-  {
-   allTaskCount();
-  });
-
-  document.getElementById('completed').addEventListener('click', event => 
-  {
-    completedTaskCount();
-  });
-
-  document.getElementById('pending').addEventListener('click', event => 
-  {
-    pendingTaskCount();
-  });
-
 }
 init();
