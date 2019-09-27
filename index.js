@@ -21,7 +21,6 @@ function init()
   showTask();
   eventsHandler();
   totalMsg();
-  
 }
 
 function getTodo() 
@@ -42,7 +41,8 @@ function addTask()
   localStorage.setItem('todo', JSON.stringify(todos));
   showTask();
   totalMsg()
-  
+  focusField();
+  clearField();
 }
 
 function showTask() 
@@ -120,11 +120,6 @@ function focusField()
 
 function eventsHandler() 
 {
-  document.getElementById('addBtn').addEventListener('click', event => 
-  {
-    focusField();
-    addTask();
-    clearField();
-  });
+  document.getElementById('addBtn').addEventListener('click',addTask);
 }
 init();
