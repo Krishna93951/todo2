@@ -4,13 +4,11 @@ function showTask()
   var html = '<ul id="ul">';
   for (var i = 0; i < todos.length; i++)
   { 
-    html += '<li id="LI">'+'<input type="checkbox" id="'+ i +'" name="check">'+' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
+    html += '<li id="LI">'+'<input type="checkbox" id="'+ i +'" class="check">'+' '+todos[i] +'  '+'<button class="remove" id="' + i + '">Del</button></li>';
   };
   html += '</ul>';
   document.getElementById('todoList').innerHTML = html;
-  eventToRemoveTask();
   eventsHandler();
-  totalMsg();
 }
 
 function totalMsg(){

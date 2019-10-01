@@ -3,16 +3,21 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-   
     <div id="actions">
       <h1> My Todo List </h1>
-      <input id="todoTask"/>
+      <select name="storage" id="store">
+        <option></option>
+        <option>LOCAL</option>
+        <option>SESSION</option>
+      </select>
+      <input id="todoTask" maxlength="20" >
       <input type="button" id="addBtn" value="Add" >
+      <input type="button" id="total" value="TaskCount">
     </div>
     <div id="todoList"></div>
     <p id="allTask"></p>
     <p id="completed"></p>
-     <script src="model.js"></script>
+    <script src="model.js"></script>
     <script src="view.js"></script>
     <script src="controller.js"></script>
   </body>

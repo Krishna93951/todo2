@@ -1,6 +1,6 @@
 var todos = [];
 var totalTodos = document.getElementById('allTask');
-
+var task = document.getElementById('todoTask').value;
 //Count Messages if tasks are available
 var countMessage = {
   all: "Number of All Tasks:",
@@ -13,9 +13,7 @@ var countMessage = {
 
 function init()
 {
-  showTask();
   eventsHandler();
-  totalMsg();
 }
 
 function removeTask() 
@@ -23,20 +21,9 @@ function removeTask()
   var id = this.getAttribute('id');
   getTodo();
   todos.splice(id, 1);
-  localStorage.setItem('todo', JSON.stringify(todos));
-  showTask();
-  totalMsg()
+  setTodo();
+  render();
 }
-
-function eventToRemoveTask() 
-{
-  var buttons = document.getElementsByClassName('remove');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', removeTask);
-  };
-}
-
-//function for all tasks
 
 //clearing the text field
 function clearField() 
@@ -53,6 +40,23 @@ function focusField()
 function eventsHandler() 
 {
   document.getElementById('addBtn').addEventListener('click',addTask);
+  var buttons = document.getElementsByClassName('remove');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', removeTask);
+  };
+}
+
+function addTask() 
+{  
+  todos.push(document.getElementById('todoTask').value);
+  setTodo();
+  render(); 
+}
+
+function render(){
+  showTask();
+  focusField();
+  clearField();
 }
 
 init();
