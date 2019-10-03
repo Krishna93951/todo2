@@ -1,0 +1,55 @@
+var ulList = document.querySelector('ul');
+
+function eventsOfLocalStorage() 
+{
+  document.getElementById('addBtn').addEventListener('click',addTask,false);
+  // var cb= document.getElementsByClassName("cb");
+  var buttons = document.getElementsByClassName('remove');
+  for (var i = 0; i < buttons.length; i++) {
+    // cb[i].addEventListener("click",check);
+    buttons[i].addEventListener('click', removeTask,false);
+  };
+  ulList.addEventListener('click',changeItemState,false);
+}
+
+function changeItemState(ev){
+  if (ev.target.tagName === 'input')
+    ev.target.classList.toggle('checked');
+}
+
+
+// if(cb[i].checked == true) {
+        //  cb[i].checked = false; 
+        //  console.log(cb[i] + id);
+
+// if(cb[i].checked == false || cb[i].checked == true ) {
+        // cb[i].checked = true; 
+        // console.log(cb[i]);
+        // }
+
+Working codes below of view.js---------------------------------------------------------------------------------
+
+function showTaskOfLocal() 
+{ 
+  var html = '<ul id="ul">';
+    for (var i = 0; i < todos.length; i++)
+    { 
+      html += '<li id="LI">'+'<input type=checkbox value="1" id ="'+ i +'" class="cb">'+'  '+'<lable class="strikeThis">'+todos[i] +'</label>'+'  '+'<button class="remove" id="' + i + '">Del</button></li>';
+    };
+    html += '</ul>';
+    document.getElementById('todoList').innerHTML = html;
+    eventsOfLocalStorage(); 
+}
+
+function totalMsg(){
+  getTodo();
+  var completed = document.querySelectorAll('input[type="checkbox" ]:checked')
+  console.log(Object.values(completed))
+  var pending = todos.length-completed.length;
+  if(todos.length === 1){
+    return totalTodos.innerHTML =   countMessage.all +todos.length +" "+countMessage.completed+completed.length+" "+  countMessage.pending+pending ; 
+  }
+  else{
+    return totalTodos.innerHTML = countMessage.all +todos.length +" "+countMessage.completed+completed.length+" "+  countMessage.pending+pending ;
+    }
+}
