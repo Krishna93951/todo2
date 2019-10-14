@@ -1,33 +1,35 @@
-function totalMsgL(checkedboxs,pending){
-    return totalTodos.innerHTML =   countMessage.all +todos.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
-}
+  var li;
+  var span;
+  var checkBox;
+  var item;
+  var deletebutton;
+  var totalTodos = document.getElementById('allTask');
+  var countMessage = {
+  all: "All Tasks: ",
+  completed: " / Number of Completed Tasks: ",
+  pending: " / Number of Pending Tasks: "
+  };
 
-function showTaskOfLocal() 
-{ 
-  getTodoFromLocal();
-  var html = '<ul id="ul">';
-    for (var i = 0; i < todos.length; i++)
-    { 
-      html += '<li id="LI">'+'<input type=checkbox value="1" id ="'+ i +'" class="checkbox">'+'  '+'<lable class="strikeThis">'+todos[i] +'</label>'+'  '+'<button class="remove" id="' + i + '">Del</button></li>';
-    };
-    html += '</ul>';
-    document.getElementById('todoList').innerHTML = html;
-    eventsOfLocalStorage(); 
-}
+  function display(i){
+  li=document.createElement("li");
+  checkBox = document.createElement('INPUT');
+  checkBox.setAttribute('type','checkbox');
+  checkBox.setAttribute('class','checkbox');
+  li.appendChild(checkBox);
+  span = document.createElement("SPAN");
+  item = document.createTextNode(i)
+  span.appendChild(item);
+  li.appendChild(span);
+  deletebutton = document.createElement('BUTTON')
+  deletebutton.innerHTML = "Del"
+  deletebutton.setAttribute('class','remove')
+  deletebutton.setAttribute('id',i)
+  li.appendChild(deletebutton);
+  attachingEventHandlers();
+  append(li)
+  }
 
-function showTaskOfSession() 
-{ 
-  getTodoFromSession();
-  var html = '<ul id="ul">';
-    for (var i = 0; i < todoSession.length; i++)
-    { 
-      html += '<li id="LI">'+'<input type=checkbox value="1" id ="'+ i +'" class="checkbox">'+'  '+'<lable class="strikeThis">'+todoSession[i] +'</label>'+'  '+'<button class="remove" id="' + i + '">Del</button></li>';
-    };
-    html += '</ul>';
-    document.getElementById("todoList").innerHTML = html;
-    eventsOfSessionStorage(); 
-}
+  function totalMsg(checkedboxs,pending){
+  return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
+  }
 
-function totalMsgS(checkedboxs,pending){
-  return totalTodos.innerHTML =   countMessage.all +todoSession.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
-}

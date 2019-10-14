@@ -3,21 +3,27 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+        <h1> My Todo List </h1>
+    <div id="main">
     <div id="actions">
-      <h1> My Todo List </h1>
-      <select name="storage" id="store">
+      <select name="storage" id="storage" onchange="chooseDataStorage()">
         <option>Select the Storage type</option>
-        <option>LOCAL</option>
-        <option>SESSION</option>
+        <option id="localstorage" value="LocalStorage">LocalStorage</option>
+        <option id="sessionstorage"value="SessionStorage">SessionStorage</option>
       </select>
-      <input id="todoTask" maxlength="20" placeholder="Enter your To-do" >
-      <input type="button" id="addBtn" value="Add" >
+      <div id="container">
+      <input id="input" maxlength="40" placeholder="Enter your To-do" >
+      <input type="button" id="addBtn" value="Add" class="addBtn" >
     </div>
-    <div id="todoList">
     </div>
+    <div >
+      <ul id="ul"></ul>
+    </div>
+</div>
     <p id="allTask"></p>
     <script src="model.js"></script>
     <script src="view.js"></script>
     <script src="controller.js"></script>
+    <script src = './manager.js'></script>
   </body>
 </html>

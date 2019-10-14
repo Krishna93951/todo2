@@ -1,158 +1,155 @@
-var todos = [];
-var todoSession = [];
-var totalTodos = document.getElementById('allTask');
-var task = document.getElementById('todoTask');
-var checkbox= document.getElementsByClassName("checkbox");
+var todo =document.getElementById('input');
+var unorderedList=document.getElementById('ul');
+var localStorageValue = 'LocalStorage';
+var sessionStorageValue = 'SessionStorage';
+var defaultOption = 'Select the Storage type';
+var addBtn = document.getElementById('addBtn');
 var buttons = document.getElementsByClassName('remove');
-var addBtn= document.getElementById('addBtn');
-var addBtnSession= document.getElementById('addBtn');
-var checkboxValues = [];
+var Key = 'taskListKK';
+var enterKey = 13;
 var checkbox= document.getElementsByClassName("checkbox");
-var storage= document.getElementById('store');
-var taskList = document.getElementById("todoList");
+var storageManagerInstance;
+var itemToBeDeleted;
+var itemIndex;
+var taskData;
+var div;
+var selectedOption;
+var deletingItem;
 
-
-//Count Messages if tasks are available
-var countMessage = {
-  all: "All Tasks:",
-  completed: "/Number of Completed Tasks:",
-  pending: "/Number of Pending Tasks: ",
-  empty:"No Tasks Available",
-  noneCompleted:"None of the Tasks are Completed",
-  nonePending:"None of the Tasks are Pending",
-};
-
-function init()
-{ 
-  taskList.innerHTML="PLEASE CHOOSE TYPE OF STORAGE";
-  storage.addEventListener("change",toChooseStorageAPI);
+var alertMsg = {
+    input:"Enter Valid Input",
+    empty:"-------List is Empty-------",
+    totalMsg: function (){
+        if(selectedOption === defaultOption){
+            return totalTodos.innerHTML =   countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
+        }
+    }
 }
 
-function addTaskToLocalStorage() 
-{ 
-  if(task.value == ""){
-    alert("Please enter valid Task");
-  }
-  else{
-  todos.push(task.value);
-  setTodoToLocal();
-  renderLocal();
-  }
+function init(){
+    attachingEventHandlers();
+    emptyList();
 }
 
-function addTaskToSessionStorage() 
-{ 
-  if(task.value == ""){
-    alert("Please enter valid Task");
-  }
-  else{
-  todoSession.push(task.value);
-  setTodoToSession();
-  renderSession();
-  } 
+function inputFieldOperations(){
+    todo.value="";
+    todo.focus();
 }
 
-
-function removeTaskFromLocalStorage() 
-{ 
-  if(task.value == "") {
-  var id = this.getAttribute('id');
-  todos.splice(id, 1);
-  setTodoToLocal();
-  renderLocal();
-  }
+function attachingEventHandlers(){
+    addBtn.addEventListener("click",addTaskUsingMouse);
+    todo.addEventListener("keypress",addTaskUsingKeyboard);
+    addBtn.addEventListener("click",checkedboxCount);
+    todo.addEventListener("keypress",checkedboxCount);
+    for (var i = 0; i <buttons.length; i++) {
+        checkbox[i].addEventListener("click",checkedboxCount);
+        buttons[i].addEventListener("click",deletingTaskFromList)
+        buttons[i].addEventListener("click",checkedboxCount);
+    }
 }
 
-function removeTaskFromSessionStorage() 
-{ 
-  if(task.value == "") {
-  var id = this.getAttribute('id');
-  todoSession.splice(id, 1);
-  setTodoToSession();
-  renderSession();
-  }
+function chooseDataStorage(){
+    selectedOption=document.getElementById("storage").value
+    showTodoTasks();
+    checkedboxCount();
+    alertMsg.totalMsg();
 }
 
-//clearing the text field
-function clearField() 
-{
-  task.value = "";
+function showTodoTasks(){
+    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
+        storageManagerInstance = new StorageManager (selectedOption,Key);
+    }
+    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
+        unorderedList.innerHTML = '';
+        getData();
+        for(i=0; i<taskData.length; i++){
+        display(taskData[i]);
+        }
+        attachingEventHandlers();
+    }
+    else{
+        emptyList();
+    }
 }
 
-//focusing on the text field
-function focusField() 
-{
-  task.focus();
+function getData(){
+    taskData = storageManagerInstance.getData();
 }
 
-function eventsOfLocalStorage() 
-{
-  addBtn.addEventListener('click',addTaskToLocalStorage);
-  addBtn.addEventListener('click',checkedboxCountOfLocalTodo);
-  for (var i = 0; i < buttons.length; i++) {
-    checkbox[i].addEventListener("click",checkedboxCountOfLocalTodo);
-    buttons[i].addEventListener('click',removeTaskFromLocalStorage);
-    buttons[i].addEventListener('click',checkedboxCountOfLocalTodo);
-  };
+function setData(){
+    storageManagerInstance.setData(taskData);
 }
 
-function eventsOfSessionStorage() 
-{
-  addBtnSession.addEventListener('click',addTaskToSessionStorage);
-  addBtnSession.addEventListener('click',checkedboxCountOfSessionTodo);
-  for (var i = 0; i < buttons.length; i++) {
-    checkbox[i].addEventListener("click",checkedboxCountOfSessionTodo);
-    buttons[i].addEventListener('click',removeTaskFromSessionStorage);
-    buttons[i].addEventListener('click',checkedboxCountOfSessionTodo);
-  };
+function append(task){
+unorderedList.appendChild(task);
 }
 
-function checkedboxCountOfLocalTodo(){
-  var checkboxValues = [];
-  var checkbox= document.getElementsByClassName("checkbox");
-  for(var i = 0; i < checkbox.length; i++) {
+function addTaskUsingMouse(){
+    input = todo.value;
+    if(input ==="")
+    {
+        alert(alertMsg.input);
+    }
+    else {
+    taskData.push(input)
+    setData();
+    display(input);
+    attachingEventHandlers();
+    inputFieldOperations();
+    }
+}
+
+function addTaskUsingKeyboard(){
+    input = todo.value;
+    if(event.keyCode === enterKey){
+    if(input ==="")
+    {
+        alert(alertMsg.input);
+    }
+    else {
+        taskData.push(input)
+        setData();
+        display(input);
+        attachingEventHandlers();
+        inputFieldOperations();
+    }
+    }
+}
+
+function deletingTaskFromList(){
+    deletingItem = this.getAttribute('id')
+    removingFromArray(deletingItem)
+    div=this.parentElement;
+    div.remove();
+    setData();
+    inputFieldOperations();
+}
+
+function removingFromArray(deletingItem){
+    itemToBeDeleted = deletingItem;
+    itemIndex = taskData.indexOf(itemToBeDeleted);
+    taskData.splice(itemIndex,1);
+}
+
+function checkedboxCount(){
+    var checkboxValues = [];
+    for(var i = 0; i < checkbox.length; i++) {
     checkboxValues.push(checkbox[i].checked ? checkbox[i].checked = true:checkbox[i].checked = false);
-        } var checkedboxs = checkboxValues.filter(function (e){
-          return e == true;
+        }
+        var checkedboxs = checkboxValues.filter(function (e){
+            return e === true;
         })
-        var pending = todos.length - checkedboxs.length
-        totalMsgL(checkedboxs,pending);    
+        var pending = taskData.length - checkedboxs.length
+        totalMsg(checkedboxs,pending);           
 }
 
-function checkedboxCountOfSessionTodo(){
-  var checkboxValues = [];
-  var checkbox= document.getElementsByClassName("checkbox");
-  for(var i = 0; i < checkbox.length; i++) {
-    checkboxValues.push(checkbox[i].checked ? checkbox[i].checked = true:checkbox[i].checked = false);
-        } var checkedboxs = checkboxValues.filter(function (e){
-          return e == true;
-        })
-        var pending = todoSession.length - checkedboxs.length
-        totalMsgS(checkedboxs,pending);    
-}
-
-function renderLocal(){
-  showTaskOfLocal();
-  focusField();
-  clearField();
-}
-
-function renderSession(){
-  showTaskOfSession();
-  focusField();
-  clearField();
-}
-
-function toChooseStorageAPI(){
-  if(storage.value == "LOCAL"){
-    getTodoFromLocal();
-    renderLocal();
+function emptyList(){
+    unorderedList.innerHTML = alertMsg.empty;
+    if(selectedOption === defaultOption)
+    {
+        unorderedList.innerHTML = alertMsg.empty;
+    }
     
-  }
-  else {
-     getTodoFromSession();
-     renderSession();
-  }  
 }
 
 init();
