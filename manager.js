@@ -1,16 +1,15 @@
 function StorageManager(storageType, key) {
-return {
-  storageType: storageType,
-  key: key,
+
+  this.storageType= storageType,
+  this.key=key,
   
-  setData: function (data) {
+  this.setData= function (data) {
       getStorageInstance(this.storageType,this.key).setData(data);
   },
-  getData: function () {
+  this.getData= function () {
       return getStorageInstance(this.storageType,this.key).getData();
-  },
+  }
 };
-}
 
 function getStorageInstance(storageType,key) {
 var test = {

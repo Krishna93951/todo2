@@ -1,8 +1,3 @@
-  var li;
-  var span;
-  var checkBox;
-  var item;
-  var deletebutton;
   var totalTodos = document.getElementById('allTask');
   var countMessage = {
   all: "All Tasks: ",
@@ -11,6 +6,11 @@
   };
 
   function display(i){
+  var li;
+  var span;
+  var checkBox;
+  var item;
+  var deletebutton;
   li=document.createElement("li");
   checkBox = document.createElement('INPUT');
   checkBox.setAttribute('type','checkbox');
