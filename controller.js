@@ -173,10 +173,4 @@ function attachingDeleteButtonEventHandler (deleteButton){
     deleteButton.addEventListener('click',checkedboxCount)
 }
 
-function togetstatus(){
-    var checkBox=this.getAttribute('id');
-    console.log(checkBox);
-
-}
-
 init();
