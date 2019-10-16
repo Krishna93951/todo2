@@ -1,18 +1,20 @@
 h1{
     text-align: center;
     font-size: 43px;
+    margin: auto;
+    width: 250px;
+    color: rgb(0, 0, 0);
 }
 
 #storage {
-    margin-left: 350px;
+    margin-left: 1px;
+    padding: 5px;
 }
 
 body {
-    margin: 10px auto;
-    min-width: 150px;
-    max-width: 40%;
-    height: 150px;
-    background-color: rgba(205, 69, 223, 0.562);
+    height: 450px;
+    width: 95%;
+    background-color: rgb(255, 255, 255); 
 }
 
 #ul {
@@ -24,10 +26,12 @@ body {
 
 #ul li {
     position: relative;
-    padding: 5px 8px 5px 10px;
+    padding: 5px 8px 1px 10px;
     list-style-type: none;
-    background: rgba(205, 69, 223, 0.562);
+    background: rgba(205, 69, 223, 0);
     font-size: 22px;
+    color: rgb(0, 0, 0);
+    font-style: italic
 }
 
 #ul li:hover {
@@ -36,6 +40,9 @@ body {
    
 #ul{
     overflow-y: scroll;
+    height: 290px;
+    width: 95%;
+    margin-left: 14px;
 }
 
 .remove {
@@ -58,6 +65,7 @@ body {
      border-top-style: solid;
      border-top-color: rgb(0, 0, 0);
      border-bottom-style: solid;
+     background-color: rgb(0, 216, 216);
      border-bottom-color: rgb(0, 0, 0);
 }
   
@@ -82,14 +90,32 @@ body {
 
 #main {
       border: rgb(0, 0, 0);
+      margin: auto;
       border-style: solid;
-}
-
-#actions{
-    padding: 10px;
+      height:450px;
+      width: 430px;
+      background-color: rgb(0, 216, 216);
 }
 
 p{
    font-size: 25px;
+   margin: auto;
    font-family: Arial, Helvetica, sans-serif;
+   width:550px;
+   color : rgb(0, 0, 0);
+}
+
+#note{
+    margin-left: 1px;
+    color: rgb(0, 0, 0);
+    font-size: 22px;
+}
+
+#actions{
+    padding:5px;
+}
+
+ul li .check:checked + span {
+    color: rgb(255, 0, 0);
+    text-decoration: line-through;
 }

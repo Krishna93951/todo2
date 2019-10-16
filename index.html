@@ -6,6 +6,7 @@
         <h1> My Todo List </h1>
     <div id="main">
     <div id="actions">
+      <strong id="note">Please select a storage before adding items.</strong>
       <select name="storage" id="storage" onchange="chooseDataStorage()">
         <option>Select the Storage type</option>
         <option id="localstorage" value="LocalStorage">LocalStorage</option>
@@ -17,7 +18,7 @@
     </div>
     </div>
     <div >
-      <ul id="ul"></ul>
+     <strong><ul id="ul"></ul></strong> 
     </div>
 </div>
     <p id="allTask"></p>

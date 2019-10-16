@@ -5,31 +5,19 @@
   pending: " / Number of Pending Tasks: "
   };
 
-  function display(i){
-  var li;
-  var span;
-  var checkBox;
-  var item;
-  var deletebutton;
-  li=document.createElement("li");
-  checkBox = document.createElement('INPUT');
-  checkBox.setAttribute('type','checkbox');
-  checkBox.setAttribute('class','checkbox');
-  li.appendChild(checkBox);
-  span = document.createElement("SPAN");
-  item = document.createTextNode(i)
-  span.appendChild(item);
-  li.appendChild(span);
-  deletebutton = document.createElement('BUTTON')
-  deletebutton.innerHTML = "Del"
-  deletebutton.setAttribute('class','remove')
-  deletebutton.setAttribute('id',i)
-  li.appendChild(deletebutton);
-  attachingEventHandlers();
+  function creatingNewElements(input){
+  var li=document.createElement("li");
+  checkboxElement(li)
+  spanElement(li,input)
+  deleteButtonElement(li,input)
   append(li)
   }
 
   function totalMsg(checkedboxs,pending){
-  return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
-  }
+    return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
+    }
 
+  function emptyList(){
+    var list=document.getElementById('ul');
+    return list.innerHTML = alertMsg.empty;
+}
