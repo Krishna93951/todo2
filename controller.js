@@ -89,7 +89,7 @@ function displayTasks(){
     var selectedOption=document.getElementById("storage").value;
     instanceCreation();
     if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        list.innerHTML = '';
+        alert(list.innerHTML)
         getData();
         for(i=0; i<taskData.length; i++){
         creatingNewElements(taskData[i].name,taskData[i].status);
