@@ -1,19 +1,18 @@
 var storageManagerInstance;
 var taskData;
-var alertMsg = {
+var notifyMessage = {
     input:"Enter Valid Input",
     empty:"----------------------------List is Empty---------------------------",
     totalMsg: function (){
         var defaultOption = 'Select the Storage type';
         var selectedOption=document.getElementById("storage").value
         if(selectedOption === defaultOption){
-            return totalTodos.innerHTML =   countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
+             emptyListMsg();
         }
     }
 }
 
 function init(){
-    attachingEventHandlers();
     emptyList();
 }
 
@@ -23,43 +22,20 @@ function clearAndFocusInputField(){
     todo.focus();
 }
 
-function attachingEventHandlers(){
-    var addBtn = document.getElementById('addBtn');
+function attachingEventListners(){
+    var addButton = document.getElementById('addBtn');
     var todo =document.getElementById('input');
-    addBtn.addEventListener("click",addTaskUsingMouse);
+    addButton.addEventListener("click",addTaskUsingMouse);
     todo.addEventListener("keypress",addTaskUsingKeyboard);
-    addBtn.addEventListener("click",checkedboxCount);
+    addButton.addEventListener("click",checkedboxCount);
     todo.addEventListener("keypress",checkedboxCount);
 }
 
 function chooseDataStorage(){
     displayTasks();
     checkedboxCount();
-    alertMsg.totalMsg();
+    notifyMessage.totalMsg();
     clearAndFocusInputField();
-}
-
-function displayTasks(){
-    var list=document.getElementById('ul');
-    var localStorageValue = 'LocalStorage';
-    var sessionStorageValue = 'SessionStorage';
-    var Key = 'taskListKK';
-    var selectedOption=document.getElementById("storage").value;
-    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        storageManagerInstance = new StorageManager (selectedOption,Key);
-    }
-    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        list.innerHTML = '';
-        getData();
-        
-        for(i=0; i<taskData.length; i++){
-        creatingNewElements(taskData[i].name);
-        }
-        attachingEventHandlers();
-    }
-    else{
-        emptyList();
-    }
 }
 
 function getData(){
@@ -70,26 +46,58 @@ function setData(){
     storageManagerInstance.setData(taskData);
 }
 
-function append(tasks){
+function appendToList(createdElements){
     var list=document.getElementById('ul');
-    list.appendChild(tasks);
+    list.appendChild(createdElements);
+}
+
+function instanceCreation(){
+    var localStorageValue = 'LocalStorage';
+    var sessionStorageValue = 'SessionStorage';
+    var selectedOption=document.getElementById("storage").value;
+    var Key = 'taskListKK';
+    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
+        storageManagerInstance = new StorageManager (selectedOption,Key);
+    }
 }
 
 function toAddTasks(){
     var todo =document.getElementById('input');
     input = todo.value;
-    if(input ==="")
-    {
-        alert(alertMsg.input);
+    var localStorageValue = 'LocalStorage';
+    var sessionStorageValue = 'SessionStorage';
+    var selectedOption=document.getElementById("storage").value;
+    if(input ===""){
+        alert(notifyMessage.input);
     }
-    else 
-    {
-    var todos={ id:Date.now(), name:input, status:false}
-    taskData.push(todos)
-    setData();
-    creatingNewElements(input);
-    attachingEventHandlers();
-    clearAndFocusInputField();
+    else {
+        if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
+        var todos={ id:Date.now(), name:input, status:false}
+        taskData.push(todos)
+        setData();
+        creatingNewElements(input);
+        attachingEventListners();
+        clearAndFocusInputField();
+        }
+    }
+}
+
+function displayTasks(){
+    var list=document.getElementById('ul');
+    var localStorageValue = 'LocalStorage';
+    var sessionStorageValue = 'SessionStorage';
+    var selectedOption=document.getElementById("storage").value;
+    instanceCreation();
+    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
+        list.innerHTML = '';
+        getData();
+        for(i=0; i<taskData.length; i++){
+        creatingNewElements(taskData[i].name,taskData[i].status);
+        }
+        attachingEventListners();
+    }
+    else{
+        emptyList();
     }
 }
 
@@ -105,50 +113,62 @@ function addTaskUsingKeyboard(){
 }
 
 function deletingTaskFromList(){
-    var deletingItem = this.getAttribute('id')
-    removingFromArray(deletingItem)
-    var div=this.parentElement;
-    div.remove();
+    var deletingItem = this.previousElementSibling.textContent;
+    removingTasksFromArray(deletingItem)
+    this.parentNode.remove();
     setData();
     clearAndFocusInputField();
 }
 
-function removingFromArray(deletingItem){
-    var itemToBeDeleted = deletingItem;
+function removingTasksFromArray(deletingItem){
     var deleteObject = taskData.find(function (element){
-        return element.name === itemToBeDeleted;
+        return element.name === deletingItem ;
     });
     var itemIndex = taskData.indexOf(deleteObject);
     taskData.splice(itemIndex,1);
     }
 
-function checkedboxCount(){
-    var checkboxValues = [];
-    var checkbox= document.querySelectorAll('input[type="checkbox"]:checked')
-    var pending;
-    var checkedboxs;
-    for(var i = 0; i < checkbox.length; i++) {
-        checkboxValues.push(checkbox[i].checked);
-        }
-        checkedboxs = checkboxValues.filter(function (e){
-            return e === true;
-        })
-        pending = taskData.length - checkedboxs.length
-        totalMsg(checkedboxs,pending);           
+function selectCheckBox(e,checkBox,item){
+    var checkStatus = e.target.checked
+    item = this.nextElementSibling.textContent;
+    var selectedItem = taskData.find(function (element){
+    return element.name === item ;
+    });
+    var itemIndex = taskData.indexOf(selectedItem);
+    taskData[itemIndex].status = checkStatus
+    toggleCheckBox(checkBox,itemIndex = taskData.indexOf(selectedItem));
+    setData();   
+    }
+
+function toggleCheckBox(checkbox,itemIndex){
+    var checkbox= document.querySelectorAll('input[type="checkbox"]')
+    for(var i =0 ; i < checkbox.length ; i++){
+    checkbox.checked = taskData[itemIndex].status;
+    }
 }
 
-function checkboxElement(li){
+function checkedboxCount() {
+    var checkbox= document.querySelectorAll('input[type="checkbox"]:checked')
+    var pending;
+    var checkedCount=0
+    for(var i = 0; i < checkbox.length; i++) {
+        checkboxCount= (checkbox[i].checked) ? checkedCount++:checkedCount--;
+    }
+    pending = taskData.length - checkedCount
+    totalMsg(checkedCount,pending);
+}
+
+function checkboxElement(li,itemIndex){
     var checkBox = document.createElement('INPUT');
     checkBox.type = 'checkbox';
-    checkBox.setAttribute('id',Date.now())
-    checkBox.setAttribute('class','check')
-    attachingCheckBoxEventHandler(checkBox);
+    checkBox.setAttribute('id','check')
+    attachingCheckBoxEventListner(checkBox);    
     li.appendChild(checkBox);
   }
 
-function attachingCheckBoxEventHandler (checkBox){
+function attachingCheckBoxEventListner (checkBox){
     checkBox.addEventListener('click',checkedboxCount);
-    checkBox.addEventListener('click',togetstatus)
+    checkBox.addEventListener('click',selectCheckBox)
 }
 
 function spanElement(li,input){
@@ -162,13 +182,13 @@ function deleteButtonElement(li,input){
     var deleteButton = document.createElement('BUTTON')
     deleteButton.innerHTML = "Del"
     deleteButton.setAttribute('class','remove')
-    deleteButton.setAttribute('id',input)
-    attachingDeleteButtonEventHandler(deleteButton)
+    deleteButton.setAttribute('id',Date.now())
+    attachingDeleteButtonEventListner(deleteButton)
     checkedboxCount();
     li.appendChild(deleteButton);
 }
 
-function attachingDeleteButtonEventHandler (deleteButton){
+function attachingDeleteButtonEventListner (deleteButton){
     deleteButton.addEventListener('click',deletingTaskFromList)
     deleteButton.addEventListener('click',checkedboxCount)
 }

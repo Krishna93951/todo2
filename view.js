@@ -10,14 +10,18 @@
   checkboxElement(li)
   spanElement(li,input)
   deleteButtonElement(li,input)
-  append(li)
+  appendToList(li)
   }
 
-  function totalMsg(checkedboxs,pending){
-    return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedboxs.length+" "+  countMessage.pending+pending ; 
+  function totalMsg(checkedCount,pending){
+    return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedCount+" "+  countMessage.pending+pending ; 
     }
+
+  function emptyListMsg(){
+    return totalTodos.innerHTML =   countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
+}
 
   function emptyList(){
     var list=document.getElementById('ul');
-    return list.innerHTML = alertMsg.empty;
-}
+    return list.innerHTML=notifyMessage.empty
+  }
