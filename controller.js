@@ -22,7 +22,7 @@ function clearAndFocusInputField(){
     todo.focus();
 }
 
-function attachingEventListners(){
+function attachEvents(){
     var addButton = document.getElementById('addBtn');
     var todo =document.getElementById('input');
     addButton.addEventListener("click",addTaskUsingMouse);
@@ -76,7 +76,7 @@ function toAddTasks(){
         taskData.push(todos)
         setData();
         creatingNewElements(input);
-        attachingEventListners();
+        attachEvents();
         clearAndFocusInputField();
         }
     }
@@ -94,7 +94,7 @@ function displayTasks(){
         for(i=0; i<taskData.length; i++){
         creatingNewElements(taskData[i].name,taskData[i].status);
         }
-        attachingEventListners();
+        attachEvents();
     }
     else{
         emptyList();
@@ -158,37 +158,37 @@ function checkedboxCount() {
     totalMsg(checkedCount,pending);
 }
 
-function checkboxElement(li,itemIndex){
+function checkbox(li){
     var checkBox = document.createElement('INPUT');
     checkBox.type = 'checkbox';
     checkBox.setAttribute('id','check')
-    attachingCheckBoxEventListner(checkBox);    
+    attachCheckBoxEvents(checkBox);    
     li.appendChild(checkBox);
   }
 
-function attachingCheckBoxEventListner (checkBox){
+function attachCheckBoxEvents (checkBox){
     checkBox.addEventListener('click',checkedboxCount);
     checkBox.addEventListener('click',selectCheckBox)
 }
 
-function spanElement(li,input){
+function todoTask(li,input){
     var span = document.createElement("SPAN");
     var item = document.createTextNode(input)
     span.appendChild(item);
     li.appendChild(span);
 }
 
-function deleteButtonElement(li,input){
+function deleteButton(li){
     var deleteButton = document.createElement('BUTTON')
     deleteButton.innerHTML = "Del"
     deleteButton.setAttribute('class','remove')
     deleteButton.setAttribute('id',Date.now())
-    attachingDeleteButtonEventListner(deleteButton)
+    attachDeleteButtonEvents(deleteButton)
     checkedboxCount();
     li.appendChild(deleteButton);
 }
 
-function attachingDeleteButtonEventListner (deleteButton){
+function attachDeleteButtonEvents (deleteButton){
     deleteButton.addEventListener('click',deletingTaskFromList)
     deleteButton.addEventListener('click',checkedboxCount)
 }

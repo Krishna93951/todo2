@@ -7,9 +7,9 @@
 
   function creatingNewElements(input){
   var li=document.createElement("li");
-  checkboxElement(li)
-  spanElement(li,input)
-  deleteButtonElement(li,input)
+  checkbox(li)
+  todoTask(li,input)
+  deleteButton(li)
   appendToList(li)
   }
 
@@ -21,7 +21,7 @@
     return totalTodos.innerHTML =   countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
 }
 
-  function emptyList(){
+function emptyList(){
     var list=document.getElementById('ul');
     return list.innerHTML=notifyMessage.empty
-  }
+}
