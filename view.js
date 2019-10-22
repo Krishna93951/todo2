@@ -14,11 +14,11 @@
   }
 
   function totalMsg(checkedCount,pending){
-    return totalTodos.innerHTML =   countMessage.all +taskData.length +" "+countMessage.completed+checkedCount+" "+  countMessage.pending+pending ; 
+    return totalTodos.innerHTML =  countMessage.all +taskData.length +" "+countMessage.completed+checkedCount+" "+  countMessage.pending+pending ; 
     }
 
   function emptyListMsg(){
-    return totalTodos.innerHTML =   countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
+    return totalTodos.innerHTML =  countMessage.all +'0'+" "+countMessage.completed+'0'+" "+  countMessage.pending+'0' ;
 }
 
 function emptyList(){

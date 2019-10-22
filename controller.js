@@ -1,7 +1,7 @@
-var storageManagerInstance;
+var storageManagerInstance
 var taskData;
 var notifyMessage = {
-    input:"Enter Valid Input",
+    inputField:"Enter Valid Input",
     empty:"----------------------------List is Empty---------------------------",
     totalMsg: function (){
         var defaultOption = 'Select the Storage type';
@@ -14,28 +14,33 @@ var notifyMessage = {
 
 function init(){
     emptyList();
+    choosingDataStorage();
+}
+
+function choosingDataStorage(){
+    window.addEventListener("change",actionsAfterChoosingDataStorage)
+}
+
+function actionsAfterChoosingDataStorage(){
+    displayTasks();
+    calculatingTheCountOfCompletedTasks();
+    notifyMessage.totalMsg();
+    clearAndFocusInputField();
 }
 
 function clearAndFocusInputField(){
-    var todo =document.getElementById('input');
+    var todo =document.getElementById('inputField');
     todo.value="";
     todo.focus();
 }
 
 function attachEvents(){
     var addButton = document.getElementById('addBtn');
-    var todo =document.getElementById('input');
-    addButton.addEventListener("click",addTaskUsingMouse);
-    todo.addEventListener("keypress",addTaskUsingKeyboard);
-    addButton.addEventListener("click",checkedboxCount);
-    todo.addEventListener("keypress",checkedboxCount);
-}
-
-function chooseDataStorage(){
-    displayTasks();
-    checkedboxCount();
-    notifyMessage.totalMsg();
-    clearAndFocusInputField();
+    var todo =document.getElementById('inputField');
+    addButton.addEventListener("click",addTaskUsingMouseEvent);
+    todo.addEventListener("keypress",addTaskUsingKeyboardEvent);
+    window.addEventListener('click', calculatingTheCountOfCompletedTasks);
+    window.addEventListener('keypress', calculatingTheCountOfCompletedTasks);
 }
 
 function getData(){
@@ -51,31 +56,31 @@ function appendToList(createdElements){
     list.appendChild(createdElements);
 }
 
-function instanceCreation(){
-    var localStorageValue = 'LocalStorage';
-    var sessionStorageValue = 'SessionStorage';
-    var selectedOption=document.getElementById("storage").value;
-    var Key = 'taskListKK';
-    if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        storageManagerInstance = new StorageManager (selectedOption,Key);
+function ToCreateStorageInstance(){
+    this.localStorageValue = 'LocalStorage';
+    this.sessionStorageValue = 'SessionStorage';
+    this.selectedOption=document.getElementById("storage").value;
+    this.key = 'taskListKK';
+    if(this.selectedOption === this.localStorageValue || this.selectedOption === this.sessionStorageValue){
+        storageManagerInstance = new StorageManager (this.selectedOption,this.key);
     }
 }
 
-function toAddTasks(){
-    var todo =document.getElementById('input');
-    input = todo.value;
-    var localStorageValue = 'LocalStorage';
-    var sessionStorageValue = 'SessionStorage';
-    var selectedOption=document.getElementById("storage").value;
-    if(input ===""){
-        alert(notifyMessage.input);
+function ToAddTasks(){
+    this.todo =document.getElementById('inputField');
+    this.inputField = this.todo.value;
+    this.localStorageValue = 'LocalStorage';
+    this.sessionStorageValue = 'SessionStorage';
+    this.selectedOption=document.getElementById("storage").value;
+    if(this.inputField ===""){
+        alert(notifyMessage.inputField);
     }
     else {
-        if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        var todos={ id:Date.now(), name:input, status:false}
-        taskData.push(todos)
+        if(this.selectedOption === this.localStorageValue || this.selectedOption === this.sessionStorageValue){
+        this.todos={ id:Date.now(), name:inputField, status:false}
+        taskData.push(this.todos)
         setData();
-        creatingNewElements(input);
+        creatingNewElements(this.inputField);
         attachEvents();
         clearAndFocusInputField();
         }
@@ -87,28 +92,30 @@ function displayTasks(){
     var localStorageValue = 'LocalStorage';
     var sessionStorageValue = 'SessionStorage';
     var selectedOption=document.getElementById("storage").value;
-    instanceCreation();
+    ToCreateStorageInstance()
     if(selectedOption === localStorageValue || selectedOption === sessionStorageValue){
-        alert(list.innerHTML)
+        list.innerHTML = "";
         getData();
         for(i=0; i<taskData.length; i++){
-        creatingNewElements(taskData[i].name,taskData[i].status);
+        creatingNewElements(taskData[i].name);
         }
         attachEvents();
     }
     else{
         emptyList();
+        emptyListMsg();
     }
 }
 
-function addTaskUsingMouse(){
-    toAddTasks();
+function addTaskUsingMouseEvent(){
+    ToAddTasks();
+
 }
 
-function addTaskUsingKeyboard(){
+function addTaskUsingKeyboardEvent(){
     var enterKey = 13;
     if(event.keyCode === enterKey){
-    toAddTasks();
+    ToAddTasks();
     }
 }
 
@@ -129,6 +136,7 @@ function removingTasksFromArray(deletingItem){
     }
 
 function selectCheckBox(e,checkBox,item){
+    var checkBox = document.createElement('INPUT');
     var checkStatus = e.target.checked
     item = this.nextElementSibling.textContent;
     var selectedItem = taskData.find(function (element){
@@ -136,7 +144,9 @@ function selectCheckBox(e,checkBox,item){
     });
     var itemIndex = taskData.indexOf(selectedItem);
     taskData[itemIndex].status = checkStatus
-    toggleCheckBox(checkBox,itemIndex = taskData.indexOf(selectedItem));
+    toggleCheckBox(checkbox,itemIndex = taskData.indexOf(selectedItem));
+    checkBox.checked = taskData[itemIndex].status
+    console.log(checkBox.checked)
     setData();   
     }
 
@@ -145,9 +155,10 @@ function toggleCheckBox(checkbox,itemIndex){
     for(var i =0 ; i < checkbox.length ; i++){
     checkbox.checked = taskData[itemIndex].status;
     }
+    console.log(checkbox.checked = taskData[itemIndex].status)
 }
 
-function checkedboxCount() {
+function calculatingTheCountOfCompletedTasks() {
     var checkbox= document.querySelectorAll('input[type="checkbox"]:checked')
     var pending;
     var checkedCount=0
@@ -162,18 +173,17 @@ function checkbox(li){
     var checkBox = document.createElement('INPUT');
     checkBox.type = 'checkbox';
     checkBox.setAttribute('id','check')
-    attachCheckBoxEvents(checkBox);    
+    attachCheckBoxEvent(checkBox);
     li.appendChild(checkBox);
   }
 
-function attachCheckBoxEvents (checkBox){
-    checkBox.addEventListener('click',checkedboxCount);
+function attachCheckBoxEvent (checkBox){
     checkBox.addEventListener('click',selectCheckBox)
 }
 
-function todoTask(li,input){
+function todoTask(li,inputField){
     var span = document.createElement("SPAN");
-    var item = document.createTextNode(input)
+    var item = document.createTextNode(inputField)
     span.appendChild(item);
     li.appendChild(span);
 }
@@ -183,14 +193,12 @@ function deleteButton(li){
     deleteButton.innerHTML = "Del"
     deleteButton.setAttribute('class','remove')
     deleteButton.setAttribute('id',Date.now())
-    attachDeleteButtonEvents(deleteButton)
-    checkedboxCount();
+    attachDeleteButtonEvent(deleteButton)
     li.appendChild(deleteButton);
 }
 
-function attachDeleteButtonEvents (deleteButton){
+function attachDeleteButtonEvent (deleteButton){
     deleteButton.addEventListener('click',deletingTaskFromList)
-    deleteButton.addEventListener('click',checkedboxCount)
 }
 
 init();
