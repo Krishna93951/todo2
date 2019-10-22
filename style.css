@@ -17,14 +17,14 @@ body {
     background-color: rgb(255, 255, 255); 
 }
 
-#ul {
+#todoList {
     margin-top: 20px;
     margin-left: 5px;
     padding: 0;
     margin-right: 5px;
 }
 
-#ul li {
+#todoList li {
     position: relative;
     padding: 5px 8px 1px 10px;
     list-style-type: none;
@@ -34,11 +34,11 @@ body {
     font-style: italic
 }
 
-#ul li:hover {
+#todoList li:hover {
     background: rgb(255, 255, 255)
 }
    
-#ul{
+#todoList{
     overflow-y: scroll;
     height: 290px;
     width: 95%;

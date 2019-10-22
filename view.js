@@ -22,6 +22,6 @@
 }
 
 function emptyList(){
-    var list=document.getElementById('ul');
+    var list=document.getElementById('todoList');
     return list.innerHTML=notifyMessage.empty
 }
